@@ -25,7 +25,11 @@ type Node struct {
 
 // main function to get into the network i.e. listen and respond
 func JoinNetwork() {
-	go server()
-	time.Sleep(4)
-	client()
+	// start listening
+	// go func() {
+	// 	err := server(8081)
+	// 	if err != nil { panic(err) }
+	// }()
+	// time.Sleep(4000)
+	// client()
 }
