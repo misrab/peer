@@ -11,5 +11,12 @@ RUN git clone https://go.googlesource.com/go && cd go && git checkout go1.4.1
 RUN cd go/src && ./all.bash
 # set go path
 RUN echo 'export GOROOT=/go\nexport PATH=$PATH:$GOROOT/bin' >> ~/.bashrc && . ~/.bashrc
-RUN mkdir /home/go && mkdir /home/go/src && mkdir /home/go/src/github.com
+RUN mkdir /home/go && mkdir /home/go/src && mkdir /home/go/src/github.com && mkdir /home/go/src/github.com/misrab
 RUN echo 'export GOPATH=/home/go PATH=$PATH:$GOPATH' >> ~/.bashrc && . ~/.bashrc
+
+# get my code
+#RUN cd /home/go/src/github.com/misrab && git clone https://github.com/misrab/peer.git && cd peer
+
+# update and run my code
+#CMD git pull && go clean && go get && go test
+CMD echo "This is a test." | wc -

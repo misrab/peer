@@ -15,7 +15,8 @@ RUN mkdir /home/go && mkdir /home/go/src && mkdir /home/go/src/github.com && mkd
 RUN echo 'export GOPATH=/home/go PATH=$PATH:$GOPATH' >> ~/.bashrc && . ~/.bashrc
 
 # get my code
-RUN cd /home/go/src/github.com/misrab && git clone https://github.com/misrab/peer.git && cd peer
+RUN cd /home/go/src/github.com/misrab && git clone https://github.com/misrab/peer.git
 
-# update and run my code
-CMD git pull
+
+# this is very sensitive to env vars for obscure reasons
+CMD ["sh", "-c", ". ~/.bashrc &&  echo moo && echo ${HOME} && echo ${GOPATH} && cd /home/go/src/github.com/misrab/peer && git pull && go clean && go get && go test"]
