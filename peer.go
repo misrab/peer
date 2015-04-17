@@ -6,20 +6,25 @@ package peer
 import (
 	"log"
 	"strconv"
+	"sync"
 )
 
 
 // listens at given port e.g. "tcp://*:5555"
 // subscribes to peers
-func Initialise(host string, peers []Peer) {
-	//peers := getSavedPeers()
-	//log.Println(peers)
-
+func Initialise(host string, peers []Peer, wg *sync.WaitGroup) {
 	go publish(host)
+
+	//peers := getSavedPeers()
 	for _, p := range peers {
 		log.Println(host + " is subscribing to " + p.Address)
 		go subscribe(p.Address)
 	}
+
+	
+
+	println("intiialsed")
+	defer wg.Done()
 }
 
 
