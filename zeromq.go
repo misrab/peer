@@ -3,15 +3,17 @@ package peer
 
 import (
 	"fmt"
-	zmq "github.com/alecthomas/gozmq"
+	zmq "github.com/pebbe/zmq4"
 	"time"
 )
 
 
 func server() {
+    fmt.Println("Starting server...")
+
 	context, _ := zmq.NewContext()
     socket, _ := context.NewSocket(zmq.REP)
-    defer context.Close()
+    defer context.Term()
     defer socket.Close()
     socket.Bind("tcp://*:5555")
 
@@ -25,15 +27,17 @@ func server() {
 
         // send reply back to client
         reply := fmt.Sprintf("World")
-        socket.Send([]byte(reply), 0)
+        socket.Send(reply, 0)
     }
 }
 
 
 func client() {
+    fmt.Println("Starting client...")
+
 	context, _ := zmq.NewContext()
     socket, _ := context.NewSocket(zmq.REQ)
-    defer context.Close()
+    defer context.Term()
     defer socket.Close()
 
     fmt.Printf("Connecting to hello world server…")
@@ -42,7 +46,7 @@ func client() {
     for i := 0; i < 10; i++ {
         // send hello
         msg := fmt.Sprintf("Hello %d", i)
-        socket.Send([]byte(msg), 0)
+        socket.Send(msg, 0)
         println("Sending ", msg)
 
         // Wait for reply:

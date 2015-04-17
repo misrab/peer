@@ -5,5 +5,6 @@ import (
 )
 
 func TestServer(t *testing.T) {
-	server()
+	go server()
+	client()
 }
