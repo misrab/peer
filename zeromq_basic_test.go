@@ -1,11 +1,21 @@
-package peer 
+// Just a quick test to see if zeromq is configured properly,
+// since it's only a binding to the C library
 
+package peer
 
 import (
+	"testing"
+
 	"fmt"
 	zmq "github.com/pebbe/zmq4"
 	"time"
 )
+
+func TestServer(t *testing.T) {
+	println("Testing ZeroMQ...")
+	go server()
+	client()
+}
 
 
 func server() {
@@ -43,7 +53,7 @@ func client() {
     fmt.Printf("Connecting to hello world server…")
     socket.Connect("tcp://localhost:5555")
 
-    for i := 0; i < 10; i++ {
+    for i := 0; i < 5; i++ {
         // send hello
         msg := fmt.Sprintf("Hello %d", i)
         socket.Send(msg, 0)
