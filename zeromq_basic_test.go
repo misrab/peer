@@ -12,9 +12,13 @@ import (
 )
 
 func TestServer(t *testing.T) {
-	return
+    // TEMP
+    return
+
 	println("\n============Testing ZeroMQ...==========\n")
 	go server()
+
+    // test multiple clients
 	client()
 }
 
