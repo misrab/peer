@@ -9,29 +9,36 @@ import (
 
 
 
-func TestInitialise(t *testing.T) {
-	log.Println("Initialising peer...")
-
+func TestPubSub(t *testing.T) {
 	// create publisher
 	msg := make(chan string)
-	quit1 := make(chan bool)
-	go publish("tcp://*:5556", msg, quit1)
+	N := 3 // # subscribers
+
+	// all quit channels
+	quits := make([]chan bool, N+1)
+	for i := 0; i < N+1; i++ { 
+		quits[i] = make(chan bool)
+	}
 
 	
-	// create subscribers
-	quit2 := make(chan bool)
-	go subscribe("tcp://localhost:5556", quit2)
+	// start publisher
+	go publish("tcp://*:5556", msg, quits[0])
+
+	// start subscribers
+	for i := 1; i < N+1; i++ {
+		go subscribe("tcp://localhost:5556", quits[i])
+	}
 
 	// wait a while then quit
-	func() {
-		for i:=0;i<10;i++ {
-			msg <- "moooo"
-			time.Sleep(2*time.Second)
-		}
-		
-		quit2 <- true
-		quit1 <- true
-		log.Println("Exiting...")
-	}()
+	for i:=0;i<3;i++ {
+		msg <- "moooo"
+		time.Sleep(2*time.Second)
+	}
+
+	log.Println("Exiting...")
+	for i := range quits {
+		quits[i] <- true
+	}
+	
 }
 
