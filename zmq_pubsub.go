@@ -57,7 +57,7 @@ func subscribe(host string, quit chan bool) {
     for {
         select {
             case <- quit:
-                log.Printf("Ending subscribe: %s...\n", host)
+                log.Printf("Ending subscribe to %s...\n", host)
                 return
 
             default:
